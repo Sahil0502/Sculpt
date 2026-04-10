@@ -1,0 +1,32 @@
+{
+  "roles": [
+    {
+      "level": 1,
+      "title": "Associate PM",
+      "competencies": [
+        {
+          "dimension": "Product Discovery",
+          "expectations": ["Runs basic discovery interviews", "Tracks customer pain points"]
+        },
+        {
+          "dimension": "Execution",
+          "expectations": ["Ships scoped deliverables", "Communicates delivery risks"]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Product Manager",
+      "competencies": [
+        {
+          "dimension": "Product Strategy",
+          "expectations": ["Connects roadmap to outcomes", "Aligns stakeholders on priority"]
+        },
+        {
+          "dimension": "Team Leadership",
+          "expectations": ["Drives cross-functional execution", "Mentors peers"]
+        }
+      ]
+    }
+  ]
+}
