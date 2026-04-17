@@ -11,8 +11,10 @@ export function VideoCall({
   remoteStream,
   peerId,
   status,
+  colleagueActive,
   onStart,
   onConnect,
+  onSimulateColleague,
   starting,
 }: {
   meetingId: string;
@@ -20,8 +22,10 @@ export function VideoCall({
   remoteStream: MediaStream | null;
   peerId: string;
   status: string;
+  colleagueActive: boolean;
   onStart: () => void;
   onConnect: (remoteId: string) => void;
+  onSimulateColleague: () => void;
   starting: boolean;
 }) {
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -55,9 +59,9 @@ export function VideoCall({
   return (
     <div className="overflow-hidden rounded-3xl border border-app-ink/10 bg-white/70">
       {/* Header bar */}
-      <div className="flex items-center justify-between border-b border-app-ink/10 px-5 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-app-ink/10 px-5 py-3">
         <div className="flex items-center gap-3">
-          <span className="font-semibold text-sm">Meeting {meetingId}</span>
+          <span className="text-sm font-semibold">Meeting {meetingId}</span>
           <span
             className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${
               isLive
@@ -82,29 +86,38 @@ export function VideoCall({
           </Button>
         )}
 
-        {isLive && peerId && (
-          <div className="flex items-center gap-2">
-            <span className="hidden text-xs text-app-ink-soft md:block">
-              Session ID:{" "}
-              <span className="font-mono">{peerId.slice(0, 8)}…</span>
-            </span>
-            <Button size="sm" variant="secondary" onClick={copyPeerId}>
-              {copied ? "Copied!" : "Copy ID"}
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => setShowInvite((p) => !p)}
-            >
-              {showInvite ? "Close" : "Invite Colleague"}
-            </Button>
+        {isLive && (
+          <div className="flex flex-wrap items-center gap-2">
+            {peerId && (
+              <>
+                <span className="hidden text-xs text-app-ink-soft sm:block">
+                  Session ID:{" "}
+                  <span className="font-mono">{peerId.slice(0, 8)}…</span>
+                </span>
+                <Button size="sm" variant="secondary" onClick={copyPeerId}>
+                  {copied ? "Copied!" : "Copy ID"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setShowInvite((p) => !p)}
+                >
+                  {showInvite ? "Close" : "Invite Colleague"}
+                </Button>
+              </>
+            )}
+            {!colleagueActive && (
+              <Button size="sm" variant="secondary" onClick={onSimulateColleague}>
+                Demo: Add Colleague
+              </Button>
+            )}
           </div>
         )}
       </div>
 
       {/* Invite panel */}
       {showInvite && (
-        <div className="flex items-center gap-3 border-b border-app-ink/10 bg-amber-50/60 px-5 py-3">
+        <div className="flex flex-wrap items-center gap-3 border-b border-app-ink/10 bg-amber-50/60 px-5 py-3">
           <p className="text-xs text-app-ink-soft">
             Share your Session ID above, then paste their ID here:
           </p>
@@ -129,7 +142,7 @@ export function VideoCall({
       )}
 
       {/* Videos */}
-      <div className="grid gap-0 md:grid-cols-2">
+      <div className="grid md:grid-cols-2">
         {/* Local */}
         <div className="relative bg-zinc-900">
           {localStream ? (
@@ -142,11 +155,7 @@ export function VideoCall({
             />
           ) : (
             <div className="flex h-56 flex-col items-center justify-center gap-3">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-zinc-700">
-                <svg className="h-8 w-8 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                </svg>
-              </div>
+              <PersonIcon />
               <p className="text-sm text-zinc-400">Camera off</p>
             </div>
           )}
@@ -155,8 +164,8 @@ export function VideoCall({
           </span>
         </div>
 
-        {/* Remote */}
-        <div className="relative border-l border-app-ink/10 bg-zinc-900">
+        {/* Remote / Colleague */}
+        <div className="relative border-t border-app-ink/10 bg-zinc-900 md:border-l md:border-t-0">
           {remoteStream ? (
             <video
               ref={remoteVideoRef}
@@ -164,13 +173,19 @@ export function VideoCall({
               playsInline
               className="h-56 w-full object-cover"
             />
+          ) : colleagueActive ? (
+            /* Simulated colleague — show animated avatar */
+            <div className="flex h-56 flex-col items-center justify-center gap-3">
+              <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-app-accent/30 ring-2 ring-app-accent/60 ring-offset-2 ring-offset-zinc-900">
+                <PersonIcon tinted />
+                <span className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-zinc-900 bg-green-400" />
+              </div>
+              <p className="text-sm font-medium text-zinc-300">Arjun Rao</p>
+              <p className="text-xs text-zinc-500">Connected · Audio only</p>
+            </div>
           ) : (
             <div className="flex h-56 flex-col items-center justify-center gap-3">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-zinc-700">
-                <svg className="h-8 w-8 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                </svg>
-              </div>
+              <PersonIcon />
               <p className="text-sm text-zinc-400">
                 {isLive ? "Waiting for colleague…" : "Not started"}
               </p>
@@ -181,6 +196,28 @@ export function VideoCall({
           </span>
         </div>
       </div>
+    </div>
+  );
+}
+
+function PersonIcon({ tinted = false }: { tinted?: boolean }) {
+  return (
+    <div
+      className={`flex h-16 w-16 items-center justify-center rounded-full ${tinted ? "bg-app-accent/20" : "bg-zinc-700"}`}
+    >
+      <svg
+        className={`h-8 w-8 ${tinted ? "text-app-accent" : "text-zinc-400"}`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+        />
+      </svg>
     </div>
   );
 }

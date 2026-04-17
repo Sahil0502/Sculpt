@@ -27,7 +27,7 @@ export function ProfileForm() {
 
   useEffect(() => {
     try {
-      const stored = window.localStorage.getItem("careersync-profile");
+      const stored = window.localStorage.getItem("sculpt-profile");
       if (stored) {
         setForm(JSON.parse(stored) as ProfileState);
       }
@@ -45,7 +45,7 @@ export function ProfileForm() {
     setStatus("Saving...");
 
     try {
-      window.localStorage.setItem("careersync-profile", JSON.stringify(form));
+      window.localStorage.setItem("sculpt-profile", JSON.stringify(form));
       setStatus("Saved locally. Connect Supabase to persist.");
     } catch {
       setStatus("Save failed. Please try again.");

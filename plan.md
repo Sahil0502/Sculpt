@@ -1,4 +1,4 @@
-# CareerSync - Complete Architecture & Build Plan
+# Sculpt - Complete Architecture & Build Plan
 
 ## Context
 7-hour hackathon. Build a 1-on-1 performance catalyst web app (mobile/tablet compatible) with online video meetings (WebRTC), offline voice recording with speaker recognition via voice embeddings, real-time transcription, pitch analysis, RAG-based AI insights using GPT-5-mini, and role-based dashboards for managers and employees.
@@ -366,7 +366,7 @@ For each audio segment (~2-3 seconds):
 
 ```json
 {
-  "system": "You are a 1-on-1 meeting analyst for the CareerSync platform. Analyze the meeting transcript and pitch data against the employee's competency framework. Always respond in the exact JSON schema provided.",
+  "system": "You are a 1-on-1 meeting analyst for the Sculpt platform. Analyze the meeting transcript and pitch data against the employee's competency framework. Always respond in the exact JSON schema provided.",
   "user_context": {
     "employee_profile": "... from RAG top 5 chunks ...",
     "competency_framework": "... relevant slice from competencies.json ...",

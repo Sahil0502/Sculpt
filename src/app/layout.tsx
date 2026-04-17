@@ -13,7 +13,7 @@ const body = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "CareerSync",
+  title: "Sculpt",
   description: "Performance catalyst for manager-employee 1-on-1s.",
 };
 

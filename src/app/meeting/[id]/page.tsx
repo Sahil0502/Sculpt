@@ -1,7 +1,5 @@
-import { AgendaPanel } from "@/components/meeting/AgendaPanel";
 import { MeetingRoomClient } from "@/components/meeting/MeetingRoomClient";
-import { OfflineRecorder } from "@/components/meeting/OfflineRecorder";
-import { AppShell } from "@/components/shell/AppShell";
+import { OfflineRoom } from "@/components/meeting/OfflineRoom";
 
 export default async function MeetingPage({
   params,
@@ -13,22 +11,11 @@ export default async function MeetingPage({
   const { id } = await params;
   const meetingId = id || "demo";
   const resolved = (await searchParams) || {};
-  const mode = resolved.mode === "offline" ? "offline" : "online";
+  const isOffline = resolved.mode === "offline";
 
-  return (
-    <AppShell title={`Meeting ${meetingId}`} subtitle={`Mode: ${mode}`}>
-      {mode === "online" ? (
-        <MeetingRoomClient meetingId={meetingId} />
-      ) : (
-        <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-          <div className="space-y-6">
-            <OfflineRecorder meetingId={meetingId} />
-          </div>
-          <div className="space-y-6">
-            <AgendaPanel meetingId={meetingId} />
-          </div>
-        </div>
-      )}
-    </AppShell>
+  return isOffline ? (
+    <OfflineRoom meetingId={meetingId} />
+  ) : (
+    <MeetingRoomClient meetingId={meetingId} />
   );
 }

@@ -3,14 +3,14 @@ import type { ActionItem, MeetingSummary, UserProfile } from "../lib/types";
 export const seedUsers: UserProfile[] = [
   {
     id: "user-manager-1",
-    email: "priya@careersync.dev",
+    email: "priya@sculpt.dev",
     name: "Priya Shah",
     role: "manager",
     designation: "Director of Product",
   },
   {
     id: "user-employee-1",
-    email: "arjun@careersync.dev",
+    email: "arjun@sculpt.dev",
     name: "Arjun Rao",
     role: "employee",
     designation: "Product Manager",

@@ -1,4 +1,4 @@
-# CareerSync
+# Sculpt
 
 Hackathon-ready 1-on-1 performance catalyst with online meetings, offline voice capture, AI insights, and role-based dashboards.
 
