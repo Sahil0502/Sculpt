@@ -509,7 +509,7 @@ export default function OnboardingPage() {
           )}
 
           {/* Step 2 — Voice */}
-          {step === 2 && <VoiceStep onDone={() => setStep(3)} />}
+          {step === 2 && <VoiceStep onDone={() => setStep(3)} userName={profile.name || "User"} />}
 
           {/* Step 3 — Done */}
           {step === 3 && (
